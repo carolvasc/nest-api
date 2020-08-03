@@ -24,6 +24,7 @@ export class CustomerController {
     return body;
   }
 
+  // TODO: Melhorar passagem de parametros
   @Put(':document')
   put(@Param('document') document, @Body() body) {
     return {
