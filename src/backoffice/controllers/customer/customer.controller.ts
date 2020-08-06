@@ -7,6 +7,7 @@ import {
   Param,
   Body,
 } from '@nestjs/common';
+import { Customer } from 'src/backoffice/models/customer.model';
 
 @Controller('v1/customers')
 export class CustomerController {
@@ -16,17 +17,16 @@ export class CustomerController {
   }
 
   @Get(':document')
-  getById(@Param('document') document) {
+  getById(@Param('document') document: string) {
     return 'Return customer ' + document;
   }
   @Post()
-  post(@Body() body) {
+  post(@Body() body: Customer) {
     return body;
   }
 
-  // TODO: Melhorar passagem de parametros
   @Put(':document')
-  put(@Param('document') document, @Body() body) {
+  put(@Param('document') document: string, @Body() body: Customer) {
     return {
       customer: document,
       data: body,
@@ -34,7 +34,7 @@ export class CustomerController {
   }
 
   @Delete(':document')
-  delete(@Param('document') document) {
+  delete(@Param('document') document: string) {
     return 'Delete customer' + document;
   }
 }
