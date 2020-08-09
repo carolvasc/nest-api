@@ -12,6 +12,7 @@ import { Customer } from 'src/backoffice/models/customer.model';
 import { Result } from 'src/backoffice/models/result.model';
 import { ValidatorInterceptor } from 'src/interceptors/validator.interceptor';
 import { CreateCustomerContract } from 'src/backoffice/contracts/customer.contracts';
+import { CreateCustomerDTO } from 'src/backoffice/dtos/create-customer-dto';
 
 @Controller('v1/customers')
 export class CustomerController {
@@ -26,7 +27,7 @@ export class CustomerController {
   }
   @Post()
   @UseInterceptors(new ValidatorInterceptor(new CreateCustomerContract()))
-  post(@Body() body: Customer) {
+  post(@Body() body: CreateCustomerDTO) {
     return new Result('Cliente criado com sucesso!', body, [], true);
   }
 
