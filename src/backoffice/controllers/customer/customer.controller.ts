@@ -13,9 +13,13 @@ import { Result } from 'src/backoffice/models/result.model';
 import { ValidatorInterceptor } from 'src/interceptors/validator.interceptor';
 import { CreateCustomerContract } from 'src/backoffice/contracts/customer.contracts';
 import { CreateCustomerDTO } from 'src/backoffice/dtos/create-customer-dto';
+import { AccountService } from 'src/backoffice/services/account.service';
+import { User } from 'src/backoffice/models/user.model';
 
 @Controller('v1/customers')
 export class CustomerController {
+  constructor(private readonly accountService: AccountService) {}
+
   @Get()
   get() {
     return new Result(null, null, [], true);
@@ -27,8 +31,11 @@ export class CustomerController {
   }
   @Post()
   @UseInterceptors(new ValidatorInterceptor(new CreateCustomerContract()))
-  post(@Body() body: CreateCustomerDTO) {
-    return new Result('Cliente criado com sucesso!', body, [], true);
+  async post(@Body() model: CreateCustomerDTO) {
+    const user = await this.accountService.create(
+      new User(model.document, model.password, true),
+    );
+    return new Result('Cliente criado com sucesso!', user, [], true);
   }
 
   @Put(':document')
