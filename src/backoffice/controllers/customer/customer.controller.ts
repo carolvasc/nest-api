@@ -14,7 +14,7 @@ import { Customer } from 'src/backoffice/models/customer.model';
 import { Result } from 'src/backoffice/models/result.model';
 import { ValidatorInterceptor } from 'src/interceptors/validator.interceptor';
 import { CreateCustomerContract } from 'src/backoffice/contracts/customer/create-customer.contract';
-import { CreateCustomerDTO } from 'src/backoffice/dtos/create-customer-dto';
+import { CreateCustomerDTO } from 'src/backoffice/dtos/create-customer.dto';
 import { AccountService } from 'src/backoffice/services/account.service';
 import { User } from 'src/backoffice/models/user.model';
 import { CustomerService } from 'src/backoffice/services/customer.service';
@@ -22,6 +22,7 @@ import { Address } from 'src/backoffice/models/address.model';
 import { CreateAddressContract } from 'src/backoffice/contracts/customer/create-address.contract';
 import { CreatePetContract } from 'src/backoffice/contracts/customer/create-pet.contract';
 import { Pet } from 'src/backoffice/models/pet.model';
+import { QueryDto } from 'src/backoffice/dtos/query.dto';
 
 @Controller('v1/customers')
 export class CustomerController {
@@ -158,5 +159,12 @@ export class CustomerController {
   @Delete(':document')
   delete(@Param('document') document: string) {
     return new Result('Cliente removido com sucesso!', {}, [], true);
+  }
+
+  @Post('query')
+  async query(@Body() model: QueryDto) {
+    const customers = await this.customerService.query(model);
+
+    return new Result(null, customers, null, true);
   }
 }
