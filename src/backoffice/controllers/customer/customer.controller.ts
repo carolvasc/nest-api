@@ -18,10 +18,6 @@ import { CreateCustomerDTO } from 'src/backoffice/dtos/create-customer.dto';
 import { AccountService } from 'src/backoffice/services/account.service';
 import { User } from 'src/backoffice/models/user.model';
 import { CustomerService } from 'src/backoffice/services/customer.service';
-import { Address } from 'src/backoffice/models/address.model';
-import { CreateAddressContract } from 'src/backoffice/contracts/customer/create-address.contract';
-import { CreatePetContract } from 'src/backoffice/contracts/customer/create-pet.contract';
-import { Pet } from 'src/backoffice/models/pet.model';
 import { QueryDto } from 'src/backoffice/dtos/query.dto';
 
 @Controller('v1/customers')
@@ -81,83 +77,13 @@ export class CustomerController {
     }
   }
 
-  @Post(':document/addresses/billing')
-  @UseInterceptors(new ValidatorInterceptor(new CreateAddressContract()))
-  async addBillingAddress(
-    @Param('document') document: string,
-    @Body() model: Address,
-  ) {
-    try {
-      await this.customerService.addBillingAddress(document, model);
-
-      return new Result('Endereço cadastrado com sucesso!', model, [], true);
-    } catch (error) {
-      throw new HttpException(
-        new Result('Não foi possível adicionar o endereço', null, error, false),
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-  }
-
-  @Post(':document/addresses/shipping')
-  @UseInterceptors(new ValidatorInterceptor(new CreateAddressContract()))
-  async addShippingAddress(
-    @Param('document') document: string,
-    @Body() model: Address,
-  ) {
-    try {
-      await this.customerService.addShippingAddress(document, model);
-
-      return new Result('Endereço cadastrado com sucesso!', model, [], true);
-    } catch (error) {
-      throw new HttpException(
-        new Result('Não foi possível adicionar o endereço', null, error, false),
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-  }
-
-  @Post(':document/pets')
-  @UseInterceptors(new ValidatorInterceptor(new CreatePetContract()))
-  async createPet(@Param('document') document: string, @Body() model: Pet) {
-    try {
-      await this.customerService.createPet(document, model);
-
-      return new Result('Seu pet adicionado com sucesso!', model, [], true);
-    } catch (error) {
-      throw new HttpException(
-        new Result('Não foi possível criar seu pet', null, error, false),
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-  }
-
-  @Put(':document/pets/:id')
-  @UseInterceptors(new ValidatorInterceptor(new CreatePetContract()))
-  async updatePet(
-    @Param('document') document: string,
-    @Param('id') id: string,
-    @Body() model: Pet,
-  ) {
-    try {
-      await this.customerService.updatePet(document, id, model);
-
-      return new Result('Seu pet foi atualizado com sucesso!', model, [], true);
-    } catch (error) {
-      throw new HttpException(
-        new Result('Não foi possível atualizar seu pet', null, error, false),
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-  }
-
   @Put(':document')
-  put(@Param('document') document: string, @Body() body: Customer) {
+  put(@Body() body: Customer) {
     return new Result('Cliente atualizado com sucesso!', body, [], true);
   }
 
   @Delete(':document')
-  delete(@Param('document') document: string) {
+  delete() {
     return new Result('Cliente removido com sucesso!', {}, [], true);
   }
 
