@@ -14,11 +14,13 @@ import { Customer } from 'src/backoffice/models/customer.model';
 import { Result } from 'src/backoffice/models/result.model';
 import { ValidatorInterceptor } from 'src/interceptors/validator.interceptor';
 import { CreateCustomerContract } from 'src/backoffice/contracts/customer/create-customer.contract';
-import { CreateCustomerDTO } from 'src/backoffice/dtos/create-customer.dto';
+import { CreateCustomerDTO } from 'src/backoffice/dtos/customer/create-customer.dto';
 import { AccountService } from 'src/backoffice/services/account.service';
 import { User } from 'src/backoffice/models/user.model';
 import { CustomerService } from 'src/backoffice/services/customer.service';
 import { QueryDto } from 'src/backoffice/dtos/query.dto';
+import { UpdateCustomerContract } from 'src/backoffice/contracts/customer/update-customer.contract';
+import { UpdateCustomerDTO } from 'src/backoffice/dtos/customer/update-customer.dto';
 
 @Controller('v1/customers')
 export class CustomerController {
@@ -78,8 +80,23 @@ export class CustomerController {
   }
 
   @Put(':document')
-  put(@Body() body: Customer) {
-    return new Result('Cliente atualizado com sucesso!', body, [], true);
+  @UseInterceptors(new ValidatorInterceptor(new UpdateCustomerContract()))
+  async update(@Param('document') document, @Body() model: UpdateCustomerDTO) {
+    try {
+      await this.customerService.update(document, model);
+
+      return new Result('Cliente atualizado com sucesso!', model, [], true);
+    } catch (error) {
+      throw new HttpException(
+        new Result(
+          'Não foi possível realizar seu cadastro',
+          null,
+          error,
+          false,
+        ),
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @Delete(':document')
