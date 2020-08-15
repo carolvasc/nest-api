@@ -23,6 +23,7 @@ import { UpdateCustomerContract } from 'src/backoffice/contracts/customer/update
 import { UpdateCustomerDTO } from 'src/backoffice/dtos/customer/update-customer.dto';
 import { CreateCreditCardContract } from 'src/backoffice/contracts/customer/create-credit-card.contract';
 import { CreditCard } from 'src/backoffice/models/credit-card.model';
+import { QueryContract } from 'src/backoffice/contracts/query.contract';
 
 @Controller('v1/customers')
 export class CustomerController {
@@ -107,6 +108,7 @@ export class CustomerController {
   }
 
   @Post('query')
+  @UseInterceptors(new ValidatorInterceptor(new QueryContract()))
   async query(@Body() model: QueryDto) {
     const customers = await this.customerService.query(model);
 

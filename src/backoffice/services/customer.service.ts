@@ -52,7 +52,6 @@ export class CustomerService {
     );
   }
 
-  // TODO: Criar um contrato para definir o take como o valor maximo de registros da tabela
   async query(model: QueryDto): Promise<Customer[]> {
     return await this.model
       .find(model.query, model.fields, { skip: model.skip, limit: model.take })

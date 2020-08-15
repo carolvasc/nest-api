@@ -26,7 +26,9 @@ export class FluntValidator {
   }
 
   isEmail(value: string, message: string) {
-    const reg = new RegExp(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    const reg = new RegExp(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    );
     if (!reg.test(value)) {
       this.errors.push(message);
     }
@@ -38,5 +40,11 @@ export class FluntValidator {
 
   isValid() {
     return this.errors.length === 0;
+  }
+
+  isGreaterThan(firstValue: number, secondValue: number, message: string) {
+    if (firstValue > secondValue) {
+      this.errors.push(message);
+    }
   }
 }
