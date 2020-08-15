@@ -8,7 +8,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { ValidatorInterceptor } from 'src/interceptors/validator.interceptor';
-import { CreateAddressContract } from 'src/backoffice/contracts/customer/create-address.contract';
+import { CreateAddressContract } from 'src/backoffice/contracts/address/create-address.contract';
 import { Result } from 'src/backoffice/models/result.model';
 import { Address } from 'src/backoffice/models/address.model';
 import { AddressType } from 'src/backoffice/enums/address-type.enum';

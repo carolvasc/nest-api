@@ -9,7 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ValidatorInterceptor } from 'src/interceptors/validator.interceptor';
-import { CreatePetContract } from 'src/backoffice/contracts/customer/create-pet.contract';
+import { CreatePetContract } from 'src/backoffice/contracts/pet/create-pet.contract';
 import { Pet } from 'src/backoffice/models/pet.model';
 import { Result } from 'src/backoffice/models/result.model';
 import { PetService } from 'src/backoffice/services/pet.service';
