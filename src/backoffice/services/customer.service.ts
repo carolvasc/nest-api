@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Customer } from '../models/customer.model';
 import { QueryDto } from '../dtos/query.dto';
 import { UpdateCustomerDTO } from '../dtos/customer/update-customer.dto';
+import { CreditCard } from '../models/credit-card.model';
 
 @Injectable()
 export class CustomerService {
@@ -34,6 +35,31 @@ export class CustomerService {
       .exec();
   }
 
+  async saveOrUpdateCreditCard(
+    document: string,
+    data: CreditCard,
+  ): Promise<Customer> {
+    const options = { upsert: true };
+
+    return await this.model.findOneAndUpdate(
+      { document },
+      {
+        $set: {
+          card: data,
+        },
+      },
+      options,
+    );
+  }
+
+  // TODO: Criar um contrato para definir o take como o valor maximo de registros da tabela
+  async query(model: QueryDto): Promise<Customer[]> {
+    return await this.model
+      .find(model.query, model.fields, { skip: model.skip, limit: model.take })
+      .sort(model.sort)
+      .exec();
+  }
+
   // NOTE: Codigo comentado a fim de estudos (ele foi refatorado em outra classe)
   // async addBillingAddress(document: string, data: Address): Promise<Customer> {
   //   const options = { upsert: true }; // Se não houver endereço ele vai criar um, se existir ele vai atualizar
@@ -60,12 +86,4 @@ export class CustomerService {
   //     options,
   //   );
   // }
-
-  // TODO: Criar um contrato para definir o take como o valor maximo de registros da tabela
-  async query(model: QueryDto): Promise<Customer[]> {
-    return await this.model
-      .find(model.query, model.fields, { skip: model.skip, limit: model.take })
-      .sort(model.sort)
-      .exec();
-  }
 }

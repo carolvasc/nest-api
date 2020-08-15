@@ -21,6 +21,8 @@ import { CustomerService } from 'src/backoffice/services/customer.service';
 import { QueryDto } from 'src/backoffice/dtos/query.dto';
 import { UpdateCustomerContract } from 'src/backoffice/contracts/customer/update-customer.contract';
 import { UpdateCustomerDTO } from 'src/backoffice/dtos/customer/update-customer.dto';
+import { CreateCreditCardContract } from 'src/backoffice/contracts/customer/create-credit-card.contract';
+import { CreditCard } from 'src/backoffice/models/credit-card.model';
 
 @Controller('v1/customers')
 export class CustomerController {
@@ -81,7 +83,7 @@ export class CustomerController {
 
   @Put(':document')
   @UseInterceptors(new ValidatorInterceptor(new UpdateCustomerContract()))
-  async update(@Param('document') document, @Body() model: UpdateCustomerDTO) {
+  async update(@Param('document') document: string, @Body() model: UpdateCustomerDTO) {
     try {
       await this.customerService.update(document, model);
 
@@ -109,5 +111,30 @@ export class CustomerController {
     const customers = await this.customerService.query(model);
 
     return new Result(null, customers, null, true);
+  }
+
+  @Post(':document/credit-cards')
+  @UseInterceptors(new ValidatorInterceptor(new CreateCreditCardContract()))
+  async createBilling(@Param('document') document: string, @Body() model: CreditCard) {
+    try {
+      await this.customerService.saveOrUpdateCreditCard(document, model);
+
+      return new Result(
+        'Cartão de crédito cadastrado com sucesso!',
+        model,
+        [],
+        true,
+      );
+    } catch (error) {
+      throw new HttpException(
+        new Result(
+          'Não foi possível adicionar cartão de crédito',
+          null,
+          error,
+          false,
+        ),
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }
