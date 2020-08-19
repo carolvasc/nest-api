@@ -1,7 +1,8 @@
-import { Contract } from '../contract';
+
 import { FluntValidator } from 'src/utils/flunt-validator';
 import { Injectable } from '@nestjs/common';
 import { QueryDto } from '../dtos/query.dto';
+import { Contract } from './contract';
 
 @Injectable()
 export class QueryContract implements Contract {
