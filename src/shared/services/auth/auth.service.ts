@@ -11,7 +11,13 @@ export class AuthService {
   ) {}
 
   async createToken() {
-    const user: JwtPayload = { username: 'teste@email.com' };
+    const user: JwtPayload = {
+      document: '1234556789',
+      email: 'carol@email.com',
+      image: 'assets/images/user.png',
+      roles: ['admin'],
+    };
+
     const accessToken = this.jwtService.sign(user);
     return {
       expiresIn: 3600,
@@ -20,6 +26,9 @@ export class AuthService {
   }
 
   async validateUser(payload: JwtPayload): Promise<any> {
-    return await this.accountService.findOneByUsername(payload.username);
+    // NOTE: Fazer chamadas ao banco apenas quando for realmente
+    // necessário para nao ficar muito custoso
+    // return await this.accountService.findOneByUsername(payload.document);
+    return payload;
   }
 }
