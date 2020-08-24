@@ -52,7 +52,7 @@ export class CustomerController {
     try {
       // Criação do usuário
       const user = await this.accountService.create(
-        new User(model.document, model.password, true),
+        new User(model.document, model.password, ['client'], true),
       );
 
       // Criação do cliente
