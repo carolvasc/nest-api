@@ -6,6 +6,7 @@ import {
   Body,
   HttpStatus,
   HttpException,
+  Get,
 } from '@nestjs/common';
 import { ValidatorInterceptor } from 'src/interceptors/validator.interceptor';
 import { CreateAddressContract } from 'src/backoffice/contracts/address/create-address.contract';
@@ -49,6 +50,22 @@ export class AddressController {
     } catch (error) {
       throw new HttpException(
         new Result('Não foi possível adicionar o endereço', null, error, false),
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @Get('search/:zipcode')
+  async search(@Param('zipcode') zipcode) {
+    try {
+      const response = await this.addressService
+        .getAddressByZipCode(zipcode)
+        .toPromise();
+
+      return new Result(null, response.data, [], true);
+    } catch (error) {
+      throw new HttpException(
+        new Result(null, null, error, false),
         HttpStatus.BAD_REQUEST,
       );
     }
