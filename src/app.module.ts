@@ -5,6 +5,7 @@ import { BackofficeModule } from './backoffice/backoffice.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StoreModule } from './store/store.module';
+import { CustomLoggerService } from './shared/services/custom-logger/custom-logger.service';
 
 @Module({
   imports: [
@@ -25,6 +26,6 @@ import { StoreModule } from './store/store.module';
     StoreModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, CustomLoggerService],
 })
 export class AppModule {}
