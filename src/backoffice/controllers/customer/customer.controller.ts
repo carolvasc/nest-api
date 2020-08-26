@@ -10,6 +10,7 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
+import { Md5 } from 'md5-typescript';
 import { Customer } from 'src/backoffice/models/customer.model';
 import { Result } from 'src/backoffice/models/result.model';
 import { ValidatorInterceptor } from 'src/interceptors/validator.interceptor';
@@ -51,8 +52,11 @@ export class CustomerController {
   async post(@Body() model: CreateCustomerDTO) {
     try {
       // Criação do usuário
+      const password = await Md5.init(
+        `${model.password}${process.env.SALT_KEY}`,
+      );
       const user = await this.accountService.create(
-        new User(model.document, model.password, ['client'], true),
+        new User(model.document, password, ['client'], true),
       );
 
       // Criação do cliente
@@ -84,7 +88,10 @@ export class CustomerController {
 
   @Put(':document')
   @UseInterceptors(new ValidatorInterceptor(new UpdateCustomerContract()))
-  async update(@Param('document') document: string, @Body() model: UpdateCustomerDTO) {
+  async update(
+    @Param('document') document: string,
+    @Body() model: UpdateCustomerDTO,
+  ) {
     try {
       await this.customerService.update(document, model);
 
@@ -117,7 +124,10 @@ export class CustomerController {
 
   @Post(':document/credit-cards')
   @UseInterceptors(new ValidatorInterceptor(new CreateCreditCardContract()))
-  async createBilling(@Param('document') document: string, @Body() model: CreditCard) {
+  async createBilling(
+    @Param('document') document: string,
+    @Body() model: CreditCard,
+  ) {
     try {
       await this.customerService.saveOrUpdateCreditCard(document, model);
 
