@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   HttpException,
   HttpStatus,
+  CacheInterceptor,
 } from '@nestjs/common';
 import { Md5 } from 'md5-typescript';
 import { Customer } from 'src/backoffice/models/customer.model';
@@ -34,6 +35,7 @@ export class CustomerController {
   ) {}
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   async getAll() {
     const customers = await this.customerService.findAll();
 
