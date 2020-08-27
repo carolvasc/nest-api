@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StoreModule } from './store/store.module';
 import { CustomLoggerService } from './shared/services/custom-logger/custom-logger.service';
+import { AgendaModule } from './agenda/agenda.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { CustomLoggerService } from './shared/services/custom-logger/custom-logg
     }),
     BackofficeModule,
     StoreModule,
+    AgendaModule,
   ],
   controllers: [AppController],
   providers: [AppService, CustomLoggerService],
