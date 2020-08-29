@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StoreModule } from './store/store.module';
 import { CustomLoggerService } from './shared/services/custom-logger/custom-logger.service';
 import { AgendaModule } from './agenda/agenda.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AgendaModule } from './agenda/agenda.module';
     BackofficeModule,
     StoreModule,
     AgendaModule,
+    ReportsModule,
   ],
   controllers: [AppController],
   providers: [AppService, CustomLoggerService],
