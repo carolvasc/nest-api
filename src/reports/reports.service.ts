@@ -3,7 +3,7 @@ import { Product } from './models/product.model';
 import { ProductArgs } from './dtos/product-args.dto';
 
 @Injectable()
-export class ReportService {
+export class ReportsService {
   async findOneById(id: string): Promise<Product> {
     return {
       id: '1234',
