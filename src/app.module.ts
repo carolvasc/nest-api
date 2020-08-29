@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
+import { MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BackofficeModule } from './backoffice/backoffice.module';
-import { MongooseModule } from '@nestjs/mongoose';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { StoreModule } from './store/store.module';
 import { CustomLoggerService } from './shared/services/custom-logger/custom-logger.service';
 import { AgendaModule } from './agenda/agenda.module';
@@ -28,6 +29,10 @@ import { ReportsModule } from './reports/reports.module';
     StoreModule,
     AgendaModule,
     ReportsModule,
+    GraphQLModule.forRoot({
+      installSubscriptionHandlers: true,
+      autoSchemaFile: 'schema.gql',
+    }),
   ],
   controllers: [AppController],
   providers: [AppService, CustomLoggerService],
